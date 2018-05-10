@@ -1,8 +1,11 @@
 {
   "name": "active-window",
   "version": "0.2.1",
-  "description": "Get active window title.",
+  "description": "Get active app name, title and icon",
   "main": "index.js",
+  "scripts": {
+    "test": "babel-node --presets es2015 test.js"
+  },
   "contributors": [
     {
       "name": "Jason Stallings ",
@@ -13,10 +16,24 @@
       "name": "Robson Vieira",
       "email": "robsonvnasc@gmail.com",
       "url": ""
+    },
+    {
+      "name": "Andrey Kostiv",
+      "email": "akostiv262@gmail.com",
+      "url": ""
+    },
+    {
+      "name": "Dmitry Naumchik",
+      "email": "ceqadrat@gmail.com",
+      "url": ""
     }
   ],
   "license": "MIT",
   "dependencies": {
     "hazardous": "^0.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
   }
 }
