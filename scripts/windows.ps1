@@ -1,8 +1,8 @@
 [CmdletBinding()]
 Param(
-[string]$n,[string]$interval
+    [string]$libPath,[string]$n,[string]$interval
 )
-Add-Type -Path '.\modules\windows\UserWindows.dll'
+Add-Type -Path $libPath
 try {
 	while($n -ne 0){
 	    $AppInfo = [UserWindows]::GetForegroundAppInfo()

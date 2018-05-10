@@ -53,9 +53,15 @@ function getConfig(){
     default:
       throw 'Operating System not supported yet. ' + process.platform;
   }
-  //Append directory to script url
-  const script_url = path.join(__dirname, config.script_url);
-  config.parameters.push(script_url);
+  //Append directory to scripts
+  const scriptsUrls = config.scripts.map(script => path.join(__dirname, script));
+  config.parameters = [ ...config.parameters, ...scriptsUrls];
+
+  //Append directory to modules
+  if (process.platform === 'win32') {
+    const moduleUrl = path.join(__dirname, config.module);
+    config.parameters.push(moduleUrl);
+  }
 
   //Append directory to subscript url on OSX
   if (process.platform === 'darwin') {
@@ -97,8 +103,10 @@ class ActiveWindowTracker {
     const { parameters }  = config;
     parameters.push(repeats);
     parameters.push(interval);
+    // parameters.push(path.join(__dirname, ));
   
     //Run shell script
+    console.log(parameters);
     this._process  = spawn(config.bin, parameters);
     this._process.stdout.setEncoding('utf8');
   
