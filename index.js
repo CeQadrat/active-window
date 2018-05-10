@@ -103,10 +103,8 @@ class ActiveWindowTracker {
     const { parameters }  = config;
     parameters.push(repeats);
     parameters.push(interval);
-    // parameters.push(path.join(__dirname, ));
   
     //Run shell script
-    console.log(parameters);
     this._process  = spawn(config.bin, parameters);
     this._process.stdout.setEncoding('utf8');
   
