@@ -4,7 +4,26 @@
     "parameters": [],
     "scripts": [
       "scripts/linux.sh"
-    ]
+    ],
+    "build": {
+      "command": "gcc",
+      "source": "modules/linux/UserWindows.c",
+      "dest": "modules/linux/UserWindows",
+      "args": [
+        "-lX11",
+        "-I/usr/include/libwnck-1.0",
+        "-I/usr/include/glib-2.0",
+        "-I/usr/lib64/glib-2.0/include",
+        "-I/usr/include/gdk-pixbuf-2.0",
+        "-I/usr/include/gtk-2.0",
+        "-I/usr/include/cairo",
+        "-I/usr/include/pango-1.0",
+        "-I/usr/lib64/gtk-2.0/include",
+        "-I/usr/include/atk-1.0",
+        "`pkg-config", "--cflags", "libwnck-1.0`",
+        "`pkg-config", "--libs", "libwnck-1.0`"
+      ]
+    }
   },
   "mac" :{
     "bin": "sh",
@@ -18,8 +37,13 @@
     "bin": "powershell",
     "parameters": [ "-ExecutionPolicy", "Bypass", "-File" ],
     "scripts": [
-      "scripts\\windows.ps1"
+      "scripts/windows.ps1"
     ],
-    "module": "modules\\windows\\UserWindows.dll"
+    "build": {
+      "command": "",
+      "source": "modules/windows/UserWindows.cs",
+      "dest": "modules/windows/UserWindows.dll",
+      "args": []
+    }
   }
 }

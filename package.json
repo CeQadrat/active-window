@@ -4,6 +4,8 @@
   "description": "Get active app name, title and icon",
   "main": "index.js",
   "scripts": {
+    "install": "npm run build",
+    "build": "node build.js",
     "test": "babel-node --presets es2015 test.js"
   },
   "contributors": [

@@ -1,74 +1,25 @@
 require('hazardous');
-const fs = require('fs');
-const path = require('path');
+const getConfig = require('./configs').getConfig;
 
 function reponseTreatment(response){
-  let window = {};
-  if (process.platform === 'linux') {
-    response = response.replace(/(WM_CLASS|WM_NAME)(\(\w+\)\s=\s)/g,'').match(/"[^"]*"/g).map(str => str.slice(1, -1));
-    window.app = response[1] || response[0];
-    window.title = response[2];
-    window.pid = null; // to complete
-  } else if (process.platform === 'win32'){
-    response = response
+  const window = {};
+  if (process.platform === 'win32' || process.platform === 'linux') {
+    const data = response
       .split(/(?:@{Id=)|(?:; ProcessName=)|(?:; AppTitle=)|(?:; AppName=)|(?:; Icon=)|(?:; Error=)|(?:})/)
       .slice(1,-1);
-    window.pid = response[0];
-    window.app = response[1];
-    window.title = response[2];
-    window.name = response[3];
-    window.icon = response[4];
-    window.error = response[5];
+    window.pid = data[0];
+    window.app = data[1];
+    window.title = data[2];
+    window.name = data[2] === data[3] ? data[3].split(' - ').pop() : data[3];
+    window.icon = data[4];
+    window.error = data[5];
   } else if (process.platform === 'darwin') {
-    response = response.split(",");
-    window.app = response[0];
-    window.title = response[1].replace(/\n$/, "").replace(/^\s/, "");
+    const data = response.split(",");
+    window.app = data[0];
+    window.title = data[1].replace(/\n$/, "").replace(/^\s/, "");
     window.pid = null; // to complete
   }
   return window;
-}
-
-/**
-* Get script config accordingly the operating system
-* @function getConfig
-*/
-function getConfig(){
-  let config = {};
-  const configs = JSON.parse(fs.readFileSync(__dirname+'/configs.json', 'utf8'));
-
-  switch (process.platform) {
-    case 'linux':
-    case 'linux2':
-      config = configs.linux;
-      break;
-
-    case 'win32':
-      config = configs.win32;
-      break;
-
-    case 'darwin':
-      config = configs.mac;
-      break;
-
-    default:
-      throw 'Operating System not supported yet. ' + process.platform;
-  }
-  //Append directory to scripts
-  const scriptsUrls = config.scripts.map(script => path.join(__dirname, script));
-  config.parameters = [ ...config.parameters, ...scriptsUrls];
-
-  //Append directory to modules
-  if (process.platform === 'win32') {
-    const moduleUrl = path.join(__dirname, config.module);
-    config.parameters.push(moduleUrl);
-  }
-
-  //Append directory to subscript url on OSX
-  if (process.platform === 'darwin') {
-    config.parameters.push(path.join(__dirname, config.subscript_url));
-  }
-
-  return config;
 }
 
 class ActiveWindowTracker { 
