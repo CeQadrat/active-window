@@ -4,7 +4,7 @@ const getConfig = require('./configs').getConfig;
 (function build() {
   return new Promise((resolve, reject) => {
     const config = getConfig();
-    if (config.build) {
+    if (config.build && config.build.command) {
       const { command, args } = config.build;
       const proc = spawn(command, args, {
         env: process.env,

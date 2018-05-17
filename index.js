@@ -3,22 +3,17 @@ const getConfig = require('./configs').getConfig;
 
 function reponseTreatment(response){
   const window = {};
-  if (process.platform === 'win32' || process.platform === 'linux') {
-    const data = response
+  const data = response
       .split(/(?:@{Id=)|(?:; ProcessName=)|(?:; AppTitle=)|(?:; AppName=)|(?:; Icon=)|(?:; Error=)|(?:})/)
       .slice(1,-1);
-    window.pid = data[0];
-    window.app = data[1];
-    window.title = data[2];
-    window.name = data[2] === data[3] ? data[3].split(' - ').pop() : data[3];
-    window.icon = data[4];
-    window.error = data[5];
-  } else if (process.platform === 'darwin') {
-    const data = response.split(",");
-    window.app = data[0];
-    window.title = data[1].replace(/\n$/, "").replace(/^\s/, "");
-    window.pid = null; // to complete
-  }
+  window.pid = data[0];
+  window.app = data[1];
+  window.title = data[2];
+  window.name = data[3] && (data[2] === data[3])
+    ? data[3].split(' - ').pop()
+    : data[3];
+  window.icon = data[4];
+  window.error = data[5];
   return window;
 }
 

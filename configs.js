@@ -11,6 +11,12 @@ function getBuildConfigArgs(buildConfig) {
         ...buildConfig.args
       ];
 
+    case 'darwin':
+      return [
+        '-o', buildConfig.dest,
+        buildConfig.source
+      ];
+
     default:
       return buildConfig.args;
   }
@@ -47,11 +53,6 @@ function getConfig() {
     config.build.dest = path.join(__dirname, config.build.dest);
     config.parameters.push(config.build.dest);
     config.build.args = getBuildConfigArgs(config.build);
-  }
-
-  //Append directory to subscript url on OSX
-  if (process.platform === 'darwin') {
-    config.parameters.push(path.join(__dirname, config.subscript_url));
   }
 
   return config;

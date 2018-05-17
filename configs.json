@@ -29,9 +29,14 @@
     "bin": "sh",
     "parameters" : [],
     "scripts": [
-      "scripts/mac.sh",
-      "scripts/mac.scpt"
-    ]
+      "scripts/mac.sh"
+    ],
+    "build": {
+      "command": "osacompile",
+      "source": "modules/mac/UserWindows.applescript",
+      "dest": "modules/mac/UserWindows.scpt",
+      "args": []
+    }
   },
   "win32":{
     "bin": "powershell",
