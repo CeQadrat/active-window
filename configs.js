@@ -17,6 +17,14 @@ function getBuildConfigArgs(buildConfig) {
         buildConfig.source
       ];
 
+    case 'win32':
+      const args = buildConfig.args.map(script => path.join(__dirname, script));
+      return [
+        ...args,
+        buildConfig.source,
+        buildConfig.dest,
+      ];
+
     default:
       return buildConfig.args;
   }

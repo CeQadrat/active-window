@@ -3,6 +3,7 @@ Param(
     [string]$libPath,[string]$n,[string]$interval
 )
 Add-Type -Path $libPath
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 try {
 	while($n -ne 0){
 	    $AppInfo = [UserWindows]::GetForegroundAppInfo()
