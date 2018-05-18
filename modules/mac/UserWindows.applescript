@@ -38,9 +38,16 @@ on scaleImageAndConvert(theImgPath)
 	tell application "System Events"
 		tell application "Image Events"
 			set theImage to open theImgPath
+			
+			set randomHash to ""
+			repeat with x from 1 to 5
+				set randomChar to ASCII character (random number from 97 to 122)
+				set randomHash to randomHash & randomChar
+			end repeat
+			
 			tell theImage
 				set theName to name
-				set theSavePath to "/tmp/" & "tmp-" & theName
+				set theSavePath to "/tmp/" & "tmp-" & randomHash & "-" & theName
 				scale to size 64
 				save as PNG in theSavePath
 				set b64 to do shell script "openssl enc -base64 -in \"" & theSavePath & "\" | tr -d \"\\n\""
