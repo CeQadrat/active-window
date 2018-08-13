@@ -1,3 +1,5 @@
 node_modules
 .idea
+.vscode
 modules/windows/UserWindows.dll
+modules/linux/UserWindows

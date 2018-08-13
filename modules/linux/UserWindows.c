@@ -29,6 +29,10 @@ int getWindowPid(WnckWindow* window) {
 }
 
 char* getWindowIconBase64(WnckWindow* window) {
+  gboolean isFallbackIcon = wnck_window_get_icon_is_fallback(window);
+  if (isFallbackIcon) {
+    return "";
+  }
   GdkPixbuf* pixbuf = wnck_window_get_icon(window);
   char* buffer;
   gsize size;
