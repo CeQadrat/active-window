@@ -11,6 +11,7 @@ public class UserWindows
 {
     private static Process _realProcess;
     private const UInt32 WM_GETICON = 0x007F;
+    private const UInt32 IDI_APPLICATION = 0x7F00;
     private const int ICON_BIG = 1;
     private const int GCL_HICON = -14;
 
@@ -104,18 +105,15 @@ public class UserWindows
         if (hIcon == IntPtr.Zero)
             hIcon = GetClassLongPtr(windowHandle, GCL_HICON);
 
-        if (hIcon == IntPtr.Zero)
-        {
-            hIcon = LoadIcon(IntPtr.Zero, (IntPtr)0x7F00);
-        }
+        var fallbackIconHandler = LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
 
-        if (hIcon != IntPtr.Zero)
+        if (hIcon != IntPtr.Zero && hIcon != fallbackIconHandler)
         {
             return Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
         else
         {
-            throw new InvalidOperationException("Could not load window icon.");
+            return null;
         }
     }
 
@@ -165,6 +163,10 @@ public class UserWindows
 
     private static string ImageToBase64(BitmapSource bitmap)
     {
+        if (bitmap == null)
+        {
+            return "";
+        }
         var encoder = new PngBitmapEncoder();
         var frame = BitmapFrame.Create(bitmap);
         encoder.Frames.Add(frame);

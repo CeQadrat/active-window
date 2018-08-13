@@ -53,7 +53,8 @@ class ActiveWindowTracker {
     //Run shell script
     this._process  = spawn(config.bin, parameters);
     this._process.stdout.setEncoding('utf8');
-  
+    this._process.stderr.setEncoding('utf8');
+
     //Obtain successful response from script
     this._process.stdout.on('data', (stdout) => {
       const result = reponseTreatment(stdout.toString());
