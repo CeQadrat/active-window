@@ -1,3 +1,4 @@
+require('hazardous');
 const fs = require('fs');
 const path = require('path');
 
@@ -30,6 +31,14 @@ function getBuildConfigArgs(buildConfig) {
   }
 }
 
+function appendDirectoryToBuild(config) {
+  // in electron 2.0.7, electron-builder 20.26.1 when trying append directory in getConfig method, it refers to the path inside the archive asar. If put it into a separate function, then some magic happens and the path is set to normal
+  config.build.source = path.join(__dirname, config.build.source);
+  config.build.dest = path.join(__dirname, config.build.dest);
+  config.parameters.push(config.build.dest);
+  config.build.args = getBuildConfigArgs(config.build);
+}
+
 function getConfig() {
   let config = {};
   const configs = JSON.parse(fs.readFileSync(__dirname+'/configs.json', 'utf8'));
@@ -57,10 +66,7 @@ function getConfig() {
 
   //Append directory to build
   if (config.build) {
-    config.build.source = path.join(__dirname, config.build.source);
-    config.build.dest = path.join(__dirname, config.build.dest);
-    config.parameters.push(config.build.dest);
-    config.build.args = getBuildConfigArgs(config.build);
+    appendDirectoryToBuild(config);
   }
 
   return config;
