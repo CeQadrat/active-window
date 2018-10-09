@@ -1,6 +1,6 @@
 {
   "name": "active-window",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Get active app name, title and icon",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hazardous": "^0.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

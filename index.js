@@ -1,4 +1,3 @@
-require('hazardous');
 const getConfig = require('./configs').getConfig;
 
 function reponseTreatment(response){

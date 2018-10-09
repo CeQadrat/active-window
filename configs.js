@@ -1,4 +1,3 @@
-require('hazardous');
 const fs = require('fs');
 const path = require('path');
 
@@ -19,7 +18,10 @@ function getBuildConfigArgs(buildConfig) {
       ];
 
     case 'win32':
-      const args = buildConfig.args.map(script => path.join(__dirname, script));
+      const args = buildConfig.args.map(script => {
+        const res = path.join(__dirname, script)
+        return res.replace( 'app.asar', 'app.asar.unpacked' );
+      });
       return [
         ...args,
         buildConfig.source,
@@ -35,6 +37,7 @@ function appendDirectoryToBuild(config) {
   Object.keys(config.build).map(buildParam => {
     if (buildParam === 'source' || buildParam === 'dest') {
       config.build[buildParam] = path.join(__dirname, config.build[buildParam]);
+      config.build[buildParam] = config.build[buildParam].replace( 'app.asar', 'app.asar.unpacked' );
     }
   });
   config.parameters.push(config.build.dest);
@@ -63,7 +66,10 @@ function getConfig() {
       throw 'Operating System not supported yet. ' + process.platform;
   }
   //Append directory to scripts
-  const scriptsUrls = config.scripts.map(script => path.join(__dirname, script));
+  const scriptsUrls = config.scripts.map(script => {
+    const res = path.join(__dirname, script);
+    return res.replace('app.asar', 'app.asar.unpacked');
+  });
   config.parameters = [ ...config.parameters, ...scriptsUrls];
 
   //Append directory to build
